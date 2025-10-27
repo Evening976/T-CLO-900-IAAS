@@ -1,3 +1,4 @@
+```markdown
 T-CLO-900-IAAS
 ├─ terraform/
 │ ├─ backend.tf
@@ -36,7 +37,7 @@ T-CLO-900-IAAS
 ├─ .gitignore
 ├─ README.md
 └─ .gitlab-ci.yml
-
+```
 
 ## Étapes de déploiement
 1. Initialiser Terraform :
