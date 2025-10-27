@@ -1,5 +1,8 @@
 ```markdown
 T-CLO-900-IAAS
+├─ .github/
+│ └─ workflows/
+|  └─ terraform.yml
 ├─ terraform/
 │ ├─ backend.tf
 │ ├─ main.tf
@@ -35,8 +38,7 @@ T-CLO-900-IAAS
 ├─ scripts/
 │ └─ tf_to_ansible_inventory.py
 ├─ .gitignore
-├─ README.md
-└─ .gitlab-ci.yml
+└─ README.md
 ```
 
 ## Étapes de déploiement
