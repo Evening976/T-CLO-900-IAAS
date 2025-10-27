@@ -1,0 +1,40 @@
+stages:
+- fmt
+- plan
+- apply
+
+
+variables:
+  TF_VAR_project_suffix: "dev"
+
+
+tf-fmt:
+  image: hashicorp/terraform:1.5.0
+  stage: fmt
+  script:
+  - terraform -version
+  - terraform fmt -check
+
+
+terraform-plan:
+  image: hashicorp/terraform:1.5.0
+  stage: plan
+  script:
+  - cd terraform
+  - terraform init
+  - terraform plan -out plan.tfplan
+  artifacts:
+    paths:
+    - terraform/plan.tfplan
+
+
+terraform-apply:
+  image: hashicorp/terraform:1.5.0
+  stage: apply
+  script:
+  - cd terraform
+  - terraform init
+  - terraform apply -auto-approve plan.tfplan
+  when: manual
+  only:
+  - main
