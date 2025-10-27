@@ -3,7 +3,7 @@ locals {
 }
 
 resource "azurerm_network_security_group" "nsg" {
-  count               = var.count
+  count               = var.vm_count
   name                = "${var.name_prefix}-${count.index}-nsg"
   location            = var.location
   resource_group_name = var.resource_group_name
@@ -17,7 +17,7 @@ resource "azurerm_network_security_group" "nsg" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "22"
-    source_address_prefixes    = length(var.allowed_ssh_ips}) > 0 ? var.allowed_ssh_ips : ["*"]
+    source_address_prefixes    = length(var.allowed_ssh_ips) > 0 ? var.allowed_ssh_ips : ["*"]
     destination_address_prefix = "*"
   }
 
@@ -38,7 +38,7 @@ resource "azurerm_network_security_group" "nsg" {
 }
 
 resource "azurerm_public_ip" "vm_public_ip" {
-  count               = var.enable_public_ip ? var.count : 0
+  count               = var.enable_public_ip ? var.vm_count : 0
   name                = "${var.name_prefix}-${count.index}-pip"
   location            = var.location
   resource_group_name = var.resource_group_name
@@ -49,7 +49,7 @@ resource "azurerm_public_ip" "vm_public_ip" {
 
 
 resource "azurerm_network_interface" "nic" {
-  count               = var.count
+  count               = var.vm_count
   name                = "${var.name_prefix}-${count.index}-nic"
   location            = var.location
   resource_group_name = var.resource_group_name
@@ -65,14 +65,14 @@ resource "azurerm_network_interface" "nic" {
 
 # Association NSG/NIC
 resource "azurerm_network_interface_security_group_association" "nsg_assoc" {
-  count                     = var.count
+  count                     = var.vm_count
   network_interface_id      = element(azurerm_network_interface.nic[*].id, count.index)
   network_security_group_id = element(azurerm_network_security_group.nsg[*].id, count.index)
 }
 
 
 resource "azurerm_linux_virtual_machine" "vm" {
-  count                  = var.count
+  count                  = var.vm_count
   name                   = "${var.name_prefix}-${count.index}"
   location               = var.location
   resource_group_name    = var.resource_group_name

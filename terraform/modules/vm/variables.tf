@@ -35,7 +35,7 @@ variable "allowed_ssh_ips" {
   default     = ["0.0.0.0/0"]
 }
 
-variable "count" {
+variable "vm_count" {
   description = "Nombre de VMs à créer"
   type        = number
   default     = 1
